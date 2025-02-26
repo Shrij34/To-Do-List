@@ -88,9 +88,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return date.toDateString() === today.toDateString();
     };
     // Function to retrieve tasks from LocalStorage and display them
+
+
     const displayTasks = (section, tasksToDisplay) => {
         currentSection = section;
+        console.log (localStorage);
         const tasks = Object.entries(localStorage)
+        
         .filter(([key]) => key !== "userPreferences")
         .map(([, tasks]) => JSON.parse(tasks));
         const tasksToRender = tasksToDisplay || tasks;

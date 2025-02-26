@@ -1,0 +1,22 @@
+{
+  "name": "to-do-list",
+  "version": "1.0.0",
+  "description": "<img src=\"img/ico.png\" alt=\"To-Do List App\" width=\"35\" height=\"35\">",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "express": "^4.21.2",
+    "jquery": "^3.7.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
+    "globals": "^16.0.0"
+  }
+}
