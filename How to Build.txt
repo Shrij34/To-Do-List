@@ -1,0 +1,322 @@
+📌 Step 1: Install Node.js & npm
+First, ensure you have Node.js and npm installed.
+
+1️⃣ Download & Install Node.js (LTS version recommended).
+2️⃣ Verify Installation by running:
+
+sh
+Copy
+Edit
+node -v
+npm -v
+If both commands return version numbers, you're good to go.
+
+📌 Step 2: Initialize npm in Your Project
+Navigate to your To-Do List project folder:
+
+sh
+Copy
+Edit
+cd D:\Az400\shubam\Projects\To-Do-List
+npm init -y
+This creates a package.json file, which manages dependencies.
+
+Since you only have a script.js file and not an index.js, you can either:
+
+Option 1: Change main to script.js (Recommended)
+When you run npm init -y, it creates a package.json file with this line:
+
+json
+Copy
+Edit
+"main": "index.js",
+Since your project does not have index.js, you should change it to:
+
+json
+Copy
+Edit
+"main": "script.js",
+
+
+📌 Step 3: Install Live Server (For Auto-Refresh)
+Since this is a frontend-only project, Live Server will help with automatic reloading.
+
+1️⃣ Install Live Server globally:
+
+sh
+Copy
+Edit
+npm install -g live-server
+2️⃣ Start the project:
+
+sh
+Copy
+Edit
+live-server
+This will open index.html in your default browser and reload automatically when you make changes.
+
+📌 Step 4: Install Additional Frontend Dependencies (Optional)
+If your script.js uses libraries like Bootstrap or jQuery, install them using npm:
+
+jQuery
+sh
+Copy
+Edit
+npm install jquery
+Bootstrap
+sh
+Copy
+Edit
+npm install bootstrap
+ESLint (for JavaScript Code Quality)
+sh
+Copy
+Edit
+npm install eslint --save-dev
+npx eslint --init
+
+
+What Should You Do?
+
+Need to install the following packages:
+@eslint/create-config@1.5.0
+Ok to proceed? (y) press y
+
+How would you like to use ESLint?", you should choose:
+
+✅ "To check syntax and find problems"
+
+Since your project is a frontend-only JavaScript project (without Node.js modules), you should choose:
+
+✅ "None of these"
+
+Since your project is a plain JavaScript (Vanilla JS) frontend project, you should choose:
+
+✅ "None of these"
+
+Since your project is a JavaScript project and not using TypeScript, you should select:
+
+✅ "No"
+
+? Where does your code run? ...  (Press <space> to select, <a> to toggle all, <i> to invert selection)
+✅ "Browser"
+
+📌 Step 5: Project Folder Structure
+Your final folder structure should look like this:
+
+css
+Copy
+Edit
+To-Do-List/
+│── css/                 (Stylesheets)
+│── img/                 (Images)
+│── js/                  (JavaScript files)
+│   └── script.js        (Main script)
+│── screenshots/         (Screenshots)
+│── index.html           (Main HTML file)
+│── README.md            (Project documentation)
+│── readme.txt           (Text file)
+│── package.json         (npm package file)
+│── node_modules/        (Installed dependencies)
+📌 Step 6: Running the Project
+Now, open your terminal in the project folder and run:
+
+sh
+Copy
+Edit
+You can specify the port directly when you run Live Server from the command line.
+live-server --port=9000
+ 
+Your browser will automatically open and display your To-Do List app.
+
+Now for dockerizing the container 
+
+
+first do 
+$docker init 
+
+? What application platform does your project use? Node
+? What version of Node do you want to use? (22.12.0)
+? What command do you want to use to start the app? [tab for suggestions] (node script.js) 
+
+
+
+Here’s how you can serve your application with Express inside Docker:
+
+Install Express: Add Express to your package.json:
+
+sh
+Copy
+Edit
+npm install express
+Create a simple Express server: Create a file server.js (or update your script.js for this logic):
+
+js
+Copy
+Edit
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const port = 3000;
+
+// Serve static files from the 'js' directory
+app.use(express.static(path.join(__dirname, 'js')));
+
+// Start the server
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
+Update your Dockerfile to run server.js: Modify your Dockerfile to run the Express server instead of script.js:
+
+Dockerfile
+Copy
+Edit
+CMD ["node", "server.js"]
+
+docker-compose.yaml
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"  # Expose port 3000 on the host and map it to the container's port 3000
+    volumes:
+      - ./localstorage:/usr/src/app/localstorage  # Mount the project directory to /usr/src/app in the container
+    environment:
+      - NODE_ENV=production
+    command: ["node", "server.js"]  # This is optional if it's already set in the Dockerfile
+
+
+If you Connt get 
+
+update your server.js remove js
+
+// Serve static files (CSS, JS, Images) from the project directory
+app.use(express.static(path.join(__dirname)));
+
+
+still its showing for image Loading...
+Modify the COPY . . line in Dockerfile:
+
+dockerfile
+Copy
+Edit
+COPY . /usr/src/app
+WORKDIR /usr/src/app
+
+
+
+Use Docker Volumes for Persistent Data
+If localStorage data needs to persist across container restarts, you might need to mount a volume to store localStorage data outside the container. This allows the data to survive restarts and also ensures that it has appropriate access and permissions.
+
+Example in docker-compose.yml:
+volumes:
+  - ./localstorage:/usr/src/app/localstorage
+
+if still error comes Ensure Correct Ownership and Permissions
+# Temporarily switch to root to change ownership
+USER root
+
+# Change the ownership of the app directory to the node user
+RUN chown -R node:node /usr/src/app
+
+# Switch back to non-root user
+USER node
+
+ENV NODE_ENV=production
+
+
+$ docker-compose up --build
+
+For rest 
+
+$ docker-compose down && docker-compose up --build -d
+
+
+
+
+
+history
+  103  [200~docker-compose build
+  104  docker-compose build
+  105  docker-compose up
+  106  docke rps -a
+  107  docke ps -a
+  108  dcoekr ps -a
+  109  docker ps -a
+  110  docker exec it aaa23eb9eb96 bash
+  111  docker start aaa23eb9eb96
+  112  docker ps
+  113  docker exec it aaa23eb9eb96 bash
+  114  docker exec -it aaa23eb9eb96 bash
+  115  docker exec -it aaa23eb9eb96 sh
+  116  docker-compose build
+  117  docker-compose up
+  118  docker-compose down
+  119  docker-compose up --build -d
+  120  docker-compose down
+  121  docker-compose up --build -d
+  122  docker exec -it <container_id> ls /usr/src/app
+  123  docker s
+  124  docker ps
+  125  docker exec -it a02a33a6d22e ls /usr/src/app
+  126  docker exec -it a02a33a6d22e  sh
+  127  docker ps
+  128  docker-compose down
+  129  docker-compose up --build
+  130  docker-compose down
+  131  docker-compose up --build
+  132  docker ps
+  133  live-server --port=3000
+  134  docker-compose up --build
+  135  docker-compose up --build
+  136  docker-compose up --build
+  137  docker-compose up --build
+  138  docker system prune -a
+  139  docker images
+  140  docker-compose down
+  141  docker kill $(docker ps -q)
+  142  docker kill $(docker ps -q)
+  143  docker ps -a
+  144  docker ps -q
+  145  docker rm -f a696efcb11b3
+  146  docker ps -a
+  147  docker build -t my-node-app .
+  148  docker run -p 3000:3000 my-node-app
+  149  docker build -t my-node-app .
+  150  docker run -p 3000:3000 my-node-app
+  151  docker run -p 3000:3000 my-node-app
+  152  docker build -t my-node-app .
+  153  docker build -t my-node-app .
+  154  docker build -t my-node-app .
+  155  docker build -t my-node-app .
+  156  docker ps -a
+  157  docker rm ce2dc9fd07eb
+  158  docker images
+  159  docker rmi 257298565815
+  160  docker images
+  161  docker run -p 3000:3000 my-node-app
+  162  npm install
+  163  docker-compose build
+  164  docker-compose up
+  165  docker-compose up
+  166  docker-compose up
+  167  live-server --port=9000
+  168  docker-compose up
+  169  docker-compose build
+  170  docker-compose up
+  171  git status
+  172  git add .
+  173  git add .
+  174  git commit -m "added docker file, dcoker compose file , server.js "
+  175  git status
+  176  git remote -v
+  177  git push origin feature
+  178  git branch
+  179  git checkout main
+  180  git merge feature
+  181  git add .
+  182  git commit -m "Merged feature into main"
+  183  git push origin main
+

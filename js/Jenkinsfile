@@ -1,0 +1,38 @@
+pipeline{
+    
+    agent any;
+    
+    stages{
+        stage ('Code Clone'){
+            
+            steps{
+                
+                git url: "https://github.com/Shrij34/To-Do-List.git", branch: "main"
+                echo "code clone hogaya"
+            }
+
+        }
+
+        stage ('Build'){
+            steps{
+                sh "docker build -t todo-app ."
+                echo "code build hogaya"
+            }
+        }
+
+        stage ('Test'){
+            steps{
+             echo "code test hogaya"
+            }
+
+        }
+
+        stage ('Deploy'){
+            steps{
+                sh "docker-compose down && docker-compose up --build -d"
+            }
+
+        }
+    }       
+    
+}

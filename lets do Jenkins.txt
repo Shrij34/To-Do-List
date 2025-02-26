@@ -1,0 +1,50 @@
+lets do Jenkins 
+
+Create a EC2 instance 
+download pem key 
+
+open wsl cp pem key to root folder of your wsl 9beacuse permission wont chage if its in your windows download 
+so run below to copy , cd to wskl and change permission
+
+cp Jenkins-Master.pem ~/
+ cd ~
+ chmod 400 Jenkins-Master.pem
+ls -l Jenkins-Master.pem
+
+it sould show
+-r-------- 1 $USER $USER 1678 Feb 26 12:48 Jenkins-Master.pem
+
+Now for installing Jenkins we need java so go to this website
+https://www.jenkins.io/doc/book/installing/linux/
+
+run these cmd one by one:
+
+sudo apt update
+sudo apt install fontconfig openjdk-17-jre
+java -version
+
+GO 
+####################################################################################################
+
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
+this command downloads the Jenkins GPG key from the specified URL and saves it to /usr/share/keyrings/jenkins-keyring.asc with superuser privileges. This key is typically used to verify the integrity and authenticity of packages you install from the Jenkins repository.
+
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+this command adds the Jenkins APT repository to your system's list of package sources. It does so by writing the repository information to a file named jenkins.list in the /etc/apt/sources.list.d/ directory, and it uses the GPG key at /usr/share/keyrings/jenkins-keyring.asc to verify the repository's packages.
+
+sudo apt-get update
+sudo apt-get install Jenkins
+
+####################################################################################################
+
+
+
+
+
+
+

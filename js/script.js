@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const filteredTasks = tasksToRender.filter((task) => {
             switch (section) {
                 case "myDay":
-                    titleLink.textContent = "My Day";
+                    titleLink.textContent = "My Days";
                     return task.date === todayDate;
                 case "thisWeek":
                     titleLink.textContent = "Current Week";
