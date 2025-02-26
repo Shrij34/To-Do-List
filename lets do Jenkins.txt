@@ -43,6 +43,32 @@ sudo apt-get install Jenkins
 ####################################################################################################
 
 
+NOw to verify use 
+$ sudo systemctl status Jenkins
+
+open the 8080 port in your ec2 instance in securuti group only for my IP 
+
+Now take your public ip of your ec2 and add port 8080 and paste in brower
+
+user jenkins is up and running But its locked for securtity resn
+
+so in use $ sudo cat var/lib to git intial passord (this you can fin using systemctl status jenkins also)
+
+copy paste , installing recomeded plugin, and set admin username and password
+
+save and finish
+
+your jenkis will open now
+
+Goto new items and create a pipeline job by giving name
+
+now you have fill the following form
+
+
+
+
+
+
 
 
 
