@@ -10,7 +10,7 @@
 
 services:
   app:
-    build: .
+    image: shrij34/todolist
     ports:
       - "3000:3000"  # Expose port 3000 on the host and map it to the container's port 3000
     volumes:
